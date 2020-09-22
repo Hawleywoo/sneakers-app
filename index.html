@@ -15,7 +15,10 @@
         </div>
 
         <div id="head">
-            <h1>Sneakers</h1>
+            <div id='left-head'>
+                <h1>Sneakers</h1>
+                <a href="" id="menu">Menu</a>
+            </div>
             <form action="" id="login-form">
                 <input type="text" name="username" placeholder="Username">
                 <input type="password" name="password" placeholder="Password">
@@ -23,16 +26,71 @@
             </form>
             <button class='logout-button hidden'>  Log Out</button>
         </div>
-        <ul class="sneaker-list">
-    
-        </ul>
+
+
         
+        <div id="display">
+            <div class='welcome'>
+                <h2>Welcome to Sneakers</h2>
+                <p>Keep track of your collection or search for for you next grail.</p>
+            </div>
+            
+            <div id='menu-choices' class='hidden'>
+                <a href="" id='search-sneakers'>Search Sneakers</a>
+                <a href="" id='collection'>View your collection</a>
+                <a href="" id='create-user'>Create User</a>
+            </div>
+            
+            <div>
+
+                <form action="" id='search-form' class='hidden'>
+                    <select name="brand" id="brand">
+                        <option value="jordan">Jordan</option>
+                        <option value="nike">Nike</option>
+                        <option value="Adidas">Adidas</option>
+                    </select>
+                    <select name="gender" id="gender">
+                        <option value="men">Men</option>
+                        <option value="women">Women</option>
+                        <option value="child">Child</option>
+                    </select>
+                    <input type="text" name="title" placeholder="Shoe Name:">
+                    <input type="number" name='releaseYear'>
+                    <select name="colorway" id="colorway">
+                        <option value="white">White</option>
+                        <option value="red">Red</option>
+                        <option value="blue">Blue</option>
+                        <option value="purple">Purple</option>
+                        <option value="orange">Orange</option>
+                        <option value="pink">Pink</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="brown">Brown</option>
+                        <option value="grey">Grey</option>
+                        <option value="green">Green</option>
+                    </select>
+                    <input type="submit">
+                </form>
+
+                <form action="" class="create-user-form hidden">
+                    <input type="text" name="username" placeholder="Username:">
+                    <input type="text" name="password" placeholder="Password:">
+                    <input type='submit'>
+                </form>
+
+                <ul class="sneaker-list">
+                
+                    
+                </ul>
+            </div>
+            <ul class="collection-list">
+            
+            </ul>
+        </div>
     </div>
-    <main>
-        <footer>
-            <h4>this is gonna be footer</h4>
-        </footer>
-    </main>
+
+    <footer>
+    
+    </footer>
     <script type="module" src="./App/app.js"></script>
 </body>
 </html>
