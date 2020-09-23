@@ -49,7 +49,6 @@ sneakerCollection.addEventListener('click', event => {
     sneakerCollection.classList.add('hidden')
     searchSneakers.classList.remove('hidden')
     if (token){
-        console.log(token)
         fetch(usersURL, {
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -57,6 +56,7 @@ sneakerCollection.addEventListener('click', event => {
         })
             .then(repsonse => repsonse.json())
             .then(user=> {
+                console.log(user)
                 renderUserSneaker(user.sneakers, collectionUL, user.id, user.token)
             })
     }
@@ -86,12 +86,16 @@ createUserLink.addEventListener('click', event => {
         })
         .then(response => response.json())
         .then(result => {
-            const token = localStorage.setItem('token', result.token)
-            const user_id = localStorage.setItem('user_id', result.user_id)
-            loginForm.classList.add('hidden')
-            logOutButton.classList.remove('hidden')
-            
-            renderUserSneaker(result.sneakers, collectionUL, result.token, result.user_id)
+            if (result.error){
+                console.log('error', result.error)
+            }else{
+                const token = localStorage.setItem('token', result.token)
+                const user_id = localStorage.setItem('user_id', result.user_id)
+                loginForm.classList.add('hidden')
+                logOutButton.classList.remove('hidden')
+                
+                renderUserSneaker(result.sneakers, collectionUL, result.token, result.user_id)
+            }
         })
         
         event.target.reset()
@@ -232,8 +236,8 @@ createUserLink.addEventListener('click', event => {
         element.append(createButton)
         console.log(localStorage.getItem('user_id'))
         createButton.addEventListener('click', event => {
-            console.log(token)
-            console.log(user_id)
+            console.log('token',token)
+            console.log('user id', user_id)
             fetch(userSneakerURL, {
                 method: 'POST',
                 headers: {
@@ -247,5 +251,3 @@ createUserLink.addEventListener('click', event => {
             })
         })
     }
-    
-    

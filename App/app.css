@@ -112,7 +112,7 @@ div#display{
     left: 50%;
     margin-left: -25rem;
     box-shadow: 0px 1px 24px;
-    width: 52rem;
+    width: 55rem;
     border-radius: 10px;
     overflow-y: scroll;
     margin-top: -2em;
@@ -136,7 +136,7 @@ li{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    padding: 2rem 0 2rem 0;
+    padding: 2rem  2rem;
     background: hsla(108, 100%,100%, 103%);
     border-radius: 19px;
     margin: 1em;
