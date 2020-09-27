@@ -111,6 +111,9 @@ loginForm.addEventListener('submit', event => {
     logOutButton.addEventListener('click',(event)=>{
         loginForm.classList.remove('hidden')
         logOutButton.classList.add('hidden')
+        collectionUL.innerHTML = ''
+        collectionHeader.classList.add('hidden')
+        welcome.classList.remove('hidden')
     })
     // collection.addEventListener('click', event => {
     //     sneakerUL.innerHTML = ""
@@ -218,15 +221,21 @@ loginForm.addEventListener('submit', event => {
         sneakerLi.append(deleteButton)
         deleteButton.addEventListener('click', event => {
             event.target.parentNode.remove()
-            persistDelete(event.target.parentNode.id, user_id)
+            console.log(event.target.parentNode.id, user_id)
+            persistDelete(event.target.parentNode.id, user_id, localStorage.getItem('token'))
         }) 
     }
     
-    function persistDelete(sneaker_id, user_id){
+    function persistDelete(sneaker_id, user_id, token){
         fetch(userSneakerURL, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
-                sneaker_id: sneaker_id
+                user_id: user_id,
+                sneaker_id: sneaker_id,
             })
         })
     }
