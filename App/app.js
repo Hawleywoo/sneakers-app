@@ -17,13 +17,12 @@ const sneakerCollection = document.querySelector('#collection')
 const sneakerSearch = document.querySelector('#search-form')
 const collection = document.querySelector('#collection')
 const createUserLink = document.querySelector('#create-user')
-
-
-
-
+const collectionHeader = document.querySelector('#collection-header')
+let toggle = true
 
 menu.addEventListener('click', event =>{
         event.preventDefault()
+        localStorage.getItem('token') ? null : collection.classList.add('hidden')
         welcome.classList.add('hidden')
         menuList.classList.remove('hidden')
     })
@@ -32,11 +31,13 @@ searchSneakers.addEventListener('click', event =>{
     event.preventDefault()
     collectionUL.innerHTML = ''
     searchSneakers.classList.add('hidden')
-    collection.classList.remove('hidden')
+    localStorage.getItem('token') ? collection.classList.remove('hidden') : null
+    collectionHeader.classList.add('hidden')
     fetch(sneakerURL)
         .then(response => response.json())
         .then(results => {
-            renderUserSneaker(results, collectionUL, user_id, token) 
+            toggle = !toggle
+            renderUserSneaker(results, collectionUL, user_id, token, toggle) 
         })
 })
 
@@ -56,8 +57,8 @@ sneakerCollection.addEventListener('click', event => {
         })
             .then(repsonse => repsonse.json())
             .then(user=> {
-                console.log(user)
-                renderUserSneaker(user.sneakers, collectionUL, user.id, user.token)
+                toggle = !toggle
+                renderUserSneaker(user.sneakers, collectionUL, user.id, user.token, toggle)
             })
     }
 })
@@ -66,47 +67,50 @@ createUserLink.addEventListener('click', event => {
     event.preventDefault()
     createUserForm.classList.remove('hidden')
 })
+
+loginForm.addEventListener('submit', event => {
+    event.preventDefault()
+    let login = new FormData(loginForm)
+    const username = login.get('username')
+    const password = login.get('password')
+    collectionUL.innerHTML = ''
     
-    loginForm.addEventListener('submit', event => {
-        event.preventDefault()
-        let login = new FormData(loginForm)
-        const username = login.get('username')
-        const password = login.get('password')
-        collectionUL.innerHTML = ''
-        
-        fetch(loginURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
+    fetch(loginURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password
         })
-        .then(response => response.json())
-        .then(result => {
-            if (result.error){
-                console.log('error', result.error)
-            }else{
-                const token = localStorage.setItem('token', result.token)
-                const user_id = localStorage.setItem('user_id', result.user_id)
-                loginForm.classList.add('hidden')
-                logOutButton.classList.remove('hidden')
-                
-                renderUserSneaker(result.sneakers, collectionUL, result.token, result.user_id)
-            }
-        })
-        
-        event.target.reset()
     })
+    .then(response => response.json())
+    .then(result => {
+        if (result.error){
+            console.log('error', result.error)
+        }else{
+            const token = localStorage.setItem('token', result.token)
+            const user_id = localStorage.setItem('user_id', result.user_id)
+            collectionHeader.innerText += ` back ${result.username}! \n Here is your collection.` 
+            collectionHeader.classList.remove('hidden')
+            loginForm.classList.add('hidden')
+            logOutButton.classList.remove('hidden')
+            welcome.classList.add('hidden')
+            collection.classList.remove('hidden')
+            
+            renderUserSneaker(result.sneakers, collectionUL, result.token, result.user_id, true)
+        }
+    })
+    
+    event.target.reset()
+})
     const token = localStorage.getItem('token')
     const user_id = localStorage.getItem('user_id')
     
     logOutButton.addEventListener('click',(event)=>{
         loginForm.classList.remove('hidden')
         logOutButton.classList.add('hidden')
-        collectionUL.innerHTML = ''
     })
     // collection.addEventListener('click', event => {
     //     sneakerUL.innerHTML = ""
@@ -140,11 +144,10 @@ createUserLink.addEventListener('click', event => {
         }
         
         fetch(sneakerURL)
-        .then(response => response.json())
-        .then(results => {
-            renderUserSneaker(results, sneakerUL, user_id, token) 
-        })
-        
+            .then(response => response.json())
+            .then(results => {
+                renderUserSneaker(results, sneakerUL, user_id, token) 
+            })
         event.target.reset()
     })
     
@@ -154,7 +157,7 @@ createUserLink.addEventListener('click', event => {
         fetch(sneakerURL)
             .then(response => response.json())
             .then(results => {
-                renderUserSneaker(results, sneakerUL, user_id, token)
+                renderUserSneaker(results, sneakerUL, user_id, token, false)
             })
     })
     
@@ -196,15 +199,15 @@ createUserLink.addEventListener('click', event => {
     
     
     
-    function renderUserSneaker(userSneakers, element, user_id, token){
+    function renderUserSneaker(userSneakers, element, user_id, token, collectionOrSearch){
         userSneakers.forEach(sneaker => {
             let sneakerLi = document.createElement('li')
             sneakerLi.innerHTML = `<img src='${sneaker.imageUrl}' id='sneaker-img'>${sneaker.brand} - ${sneaker.title} - ${sneaker.year}`
             sneakerLi.id = `${sneaker.id}`
             element.append(sneakerLi)
-            sneakerDeleteButton(sneakerLi)
-         
-            addSneakerToCollection(sneakerLi, token, sneakerLi.id,  user_id)
+            collectionOrSearch
+                ? sneakerDeleteButton(sneakerLi) 
+                : addSneakerToCollection(sneakerLi, token, sneakerLi.id,  user_id)
         })
     }
     
@@ -223,7 +226,6 @@ createUserLink.addEventListener('click', event => {
         fetch(userSneakerURL, {
             method: 'DELETE',
             body: JSON.stringify({
-        
                 sneaker_id: sneaker_id
             })
         })
@@ -234,10 +236,7 @@ createUserLink.addEventListener('click', event => {
         createButton.id = 'create-button'
         createButton.innerHTML = 'Add To Your Collection'
         element.append(createButton)
-        console.log(localStorage.getItem('user_id'))
         createButton.addEventListener('click', event => {
-            console.log('token',token)
-            console.log('user id', user_id)
             fetch(userSneakerURL, {
                 method: 'POST',
                 headers: {

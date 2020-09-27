@@ -160,3 +160,8 @@ img{
     height: 150px;
     width: 200px;
 }
+
+input{
+    border-radius: 5px;
+    border-style: none;
+}
