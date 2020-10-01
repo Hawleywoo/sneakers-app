@@ -131,7 +131,7 @@ footer{
     bottom: 0;
 }
 
-li{
+.sneaker-list-item{
     list-style: none;
     display: flex;
     align-items: center;
@@ -162,6 +162,62 @@ img{
 }
 
 input{
+    border-radius: 5px;
+    border-style: none;
+}
+
+.login-div{
+    display: flex;
+}
+
+#login-link {
+    padding-left: 7px;
+    font-size: 12px;
+}
+
+#create-user {
+    padding-left: 7px;
+    font-size: 12px;
+}
+
+
+button:hover{
+    color: white;
+    background-color: black;
+}
+
+input[type=submit]:hover{
+    color: white;
+    background-color: black;
+}
+
+.navbar-nav{
+    display: flex;
+    list-style-type: none;
+}
+
+.navbar-options{
+    display: none;
+    text-decoration: none;
+    padding: 5px;
+}
+.menu-bar:hover{
+  
+}
+
+.menu-bar:hover .navbar-options{
+    display: block;
+}
+
+.menu-bar:hover #menu{
+    display: none;
+}
+
+a{
+    text-decoration: none;
+}
+
+.logout-button{
     border-radius: 5px;
     border-style: none;
 }

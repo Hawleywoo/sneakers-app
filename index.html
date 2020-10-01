@@ -13,18 +13,46 @@
         </div>
         <div class="shape-left">
         </div>
-
+        
         <div id="head">
             <div id='left-head'>
                 <h1>Sneakers</h1>
-                <a href="" id="menu">Menu</a>
+                <nav class='menu-bar'>
+                    <a href="" id="menu">Menu</a>
+                    <ul class="navbar-nav">
+                        <li >
+                            <a href="" id='search-sneakers' >
+                                <span class="navbar-options">
+                                    Search Sneakers
+                                </span>
+                            </a>
+                        </li>
+                        <li >
+                            <a href="" id='collection'>
+                                <span class="navbar-options">
+                                    View your collection
+                                </span> 
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                
             </div>
-            <form action="" id="login-form">
-                <input type="text" name="username" placeholder="Username">
-                <input type="password" name="password" placeholder="Password">
-                <input type="submit" placeholder="Log In">
-            </form>
-            <button class='logout-button hidden'>  Log Out</button>
+            <div class="login-div">
+                <form action="" id="login-form">
+                    <input type="text" name="username" placeholder="Username">
+                    <input type="password" name="password" placeholder="Password">
+                    <input type="submit" value="Log In">
+                </form>
+                <a href="" id='create-user'>Create User</a>
+                <form action="" class="create-user-form hidden">
+                    <input type="text" name="username" placeholder="Username:">
+                    <input type="text" name="password" placeholder="Password:">
+                    <input type='submit' value="Create User">
+                </form>
+                <a href="" id='login-link' class="hidden">Login</a>
+                <button class='logout-button hidden'>  Log Out</button>
+            </div>
         </div>
 
 
@@ -36,9 +64,6 @@
             </div>
             
             <div id='menu-choices' class='hidden'>
-                <a href="" id='search-sneakers'>Search Sneakers</a>
-                <a href="" id='collection'>View your collection</a>
-                <a href="" id='create-user'>Create User</a>
             </div>
             
             <div>
@@ -70,17 +95,12 @@
                     <input type="submit">
                 </form>
 
-                <form action="" class="create-user-form hidden">
-                    <input type="text" name="username" placeholder="Username:">
-                    <input type="text" name="password" placeholder="Password:">
-                    <input type='submit' placeholder="Create User">
-                </form>
 
                 <ul class="sneaker-list">
                 
                 </ul>
             </div>
-            
+
             <h3 id="collection-header" class="hidden" >Welcome</h3>
             <ul class="collection-list">
             

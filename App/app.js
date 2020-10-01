@@ -18,6 +18,7 @@ const sneakerSearch = document.querySelector('#search-form')
 const collection = document.querySelector('#collection')
 const createUserLink = document.querySelector('#create-user')
 const collectionHeader = document.querySelector('#collection-header')
+const loginFormLink = document.querySelector('#login-link')
 let toggle = true
 
 menu.addEventListener('click', event =>{
@@ -65,7 +66,18 @@ sneakerCollection.addEventListener('click', event => {
 
 createUserLink.addEventListener('click', event => {
     event.preventDefault()
+    loginForm.classList.add('hidden')
+    createUserLink.classList.add('hidden')
     createUserForm.classList.remove('hidden')
+    loginFormLink.classList.remove('hidden')
+})
+
+loginFormLink.addEventListener('click', event => {
+    event.preventDefault()
+    loginForm.classList.remove('hidden')
+    createUserLink.classList.remove('hidden')
+    createUserForm.classList.add('hidden')
+    loginFormLink.classList.add('hidden')
 })
 
 loginForm.addEventListener('submit', event => {
@@ -87,8 +99,9 @@ loginForm.addEventListener('submit', event => {
     })
     .then(response => response.json())
     .then(result => {
-        if (result.error){
-            console.log('error', result.error)
+        if (result.message){
+            alert('Wrong Login Please Try Again.')
+            console.log('error', result.message)
         }else{
             const token = localStorage.setItem('token', result.token)
             const user_id = localStorage.setItem('user_id', result.user_id)
@@ -98,6 +111,7 @@ loginForm.addEventListener('submit', event => {
             logOutButton.classList.remove('hidden')
             welcome.classList.add('hidden')
             collection.classList.remove('hidden')
+            createUserLink.classList.add('hidden')
             
             renderUserSneaker(result.sneakers, collectionUL, result.token, result.user_id, true)
         }
@@ -111,6 +125,8 @@ loginForm.addEventListener('submit', event => {
     logOutButton.addEventListener('click',(event)=>{
         loginForm.classList.remove('hidden')
         logOutButton.classList.add('hidden')
+        createUserLink.classList.remove('hidden')
+        createUserLink.classList.remove('hidden')
         collectionUL.innerHTML = ''
         collectionHeader.classList.add('hidden')
         welcome.classList.remove('hidden')
@@ -205,6 +221,7 @@ loginForm.addEventListener('submit', event => {
     function renderUserSneaker(userSneakers, element, user_id, token, collectionOrSearch){
         userSneakers.forEach(sneaker => {
             let sneakerLi = document.createElement('li')
+            sneakerLi.classList.add('sneaker-list-item')
             sneakerLi.innerHTML = `<img src='${sneaker.imageUrl}' id='sneaker-img'>${sneaker.brand} - ${sneaker.title} - ${sneaker.year}`
             sneakerLi.id = `${sneaker.id}`
             element.append(sneakerLi)
