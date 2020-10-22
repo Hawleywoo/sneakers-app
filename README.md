@@ -20,7 +20,7 @@ The Sneaker app is a full-stack application made with Ruby on Rails and  vanilla
 and add sneakers into your personal collection.
 
 ## Intro Video
- [Fluffy Finder Demo](https://www.youtube.com/watch?v=mG36I8YvCnc)
+ [Sneaker App Demo](https://www.youtube.com/)
 
 ## Mod 3 Flatiron Project by Andrew Hawley
 
