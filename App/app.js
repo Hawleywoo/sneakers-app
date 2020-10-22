@@ -155,9 +155,6 @@ loginForm.addEventListener('submit', event => {
         let searchURL = ''
         const searchForm = new FormData(sneakerSearchForm)
         let brand = searchForm.get('brand').toLowerCase()
-        if(brand == "none"){
-            brand = null
-        }
         // let gender = searchForm.get('gender')
         let title = searchForm.get('title')
         // let releaseYear = searchForm.get('releaseYear')
