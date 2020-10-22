@@ -1,5 +1,5 @@
-const baseAPIURL = `https://api.thesneakerdatabase.com/v1/sneakers?limit=${15}&`
 const baseURL = 'http://localhost:3000/'
+const baseAPIURL = `${baseURL}sneakers`
 const sneakerURL = `${baseURL}sneakers`
 const loginURL= `${baseURL}login`
 const usersURL= `${baseURL}users`
@@ -14,10 +14,10 @@ const welcome = document.querySelector('.welcome')
 const menuList = document.querySelector('#menu-choices')
 const searchSneakers = document.querySelector('#search-sneakers')
 const sneakerCollection = document.querySelector('#collection')
-const sneakerSearch = document.querySelector('#search-form')
+const sneakerSearchForm = document.querySelector('#search-form')
 const collection = document.querySelector('#collection')
 const createUserLink = document.querySelector('#create-user')
-const collectionHeader = document.querySelector('#collection-header')
+const collectionHeader = document.querySelector('.collection-header')
 const loginFormLink = document.querySelector('#login-link')
 let toggle = true
 
@@ -31,6 +31,7 @@ menu.addEventListener('click', event =>{
 searchSneakers.addEventListener('click', event =>{
     event.preventDefault()
     collectionUL.innerHTML = ''
+    sneakerSearchForm.classList.remove('hidden')
     searchSneakers.classList.add('hidden')
     localStorage.getItem('token') ? collection.classList.remove('hidden') : null
     collectionHeader.classList.add('hidden')
@@ -50,6 +51,7 @@ sneakerCollection.addEventListener('click', event => {
     let user_id = localStorage.getItem('user_id')
     sneakerCollection.classList.add('hidden')
     searchSneakers.classList.remove('hidden')
+    sneakerSearchForm.classList.add('hidden')
     if (token){
         fetch(usersURL, {
             headers: {
@@ -107,6 +109,7 @@ loginForm.addEventListener('submit', event => {
             const user_id = localStorage.setItem('user_id', result.user_id)
             collectionHeader.innerText += ` back ${result.username}! \n Here is your collection.` 
             collectionHeader.classList.remove('hidden')
+            sneakerSearchForm.classList.add('hidden')
             loginForm.classList.add('hidden')
             logOutButton.classList.remove('hidden')
             welcome.classList.add('hidden')
@@ -146,25 +149,35 @@ loginForm.addEventListener('submit', event => {
     //         })
     // })
     
-    sneakerSearch.addEventListener('submit', (event)=>{
+    sneakerSearchForm.addEventListener('submit', (event)=>{
         event.preventDefault()
         sneakerUL.innerHTML = ''
-        const searchForm = new FormData(sneakerSearch)
-        let brand = searchForm.get('brand')
-        let gender = searchForm.get('gender')
-        let title = searchForm.get('title')
-        let releaseYear = searchForm.get('releaseYear')
-        let colorway = searchForm.get('colorway')
-        let searchURL = `${baseAPIURL}`
-        for(let pair of searchForm.entries()){
-            if (pair[1]){
-                console.log(searchURL += `${pair[0]}=${pair[1]}&`)
-            }
+        let searchURL = ''
+        const searchForm = new FormData(sneakerSearchForm)
+        let brand = searchForm.get('brand').toLowerCase()
+        if(brand == "none"){
+            brand = null
         }
-        
-        fetch(sneakerURL)
+        // let gender = searchForm.get('gender')
+        let title = searchForm.get('title')
+        // let releaseYear = searchForm.get('releaseYear')
+        // let colorway = searchForm.get('colorway')
+        if(title && brand){
+            searchURL = `${baseAPIURL}?title=${title}&brand=${brand}`
+        }else if (brand){
+            searchURL = `${baseAPIURL}?brand=${brand}`
+        }
+        // for(let pair of searchForm.entries()){
+        //     if (pair[1]){
+        //         console.log(searchURL += `${pair[0]}=${pair[1]}&`)
+        //     }
+        // }
+
+        fetch(searchURL)
             .then(response => response.json())
             .then(results => {
+                sneakerUL.innerHTML =''
+                collectionUL.innerHTML = ""
                 renderUserSneaker(results, sneakerUL, user_id, token) 
             })
         event.target.reset()
